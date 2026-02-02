@@ -1,18 +1,14 @@
 # syntax=docker/dockerfile:1
 
-# Stage 1: Install dependencies
-FROM node:20-alpine AS deps
+# Stage 1: Build the application
+FROM node:20-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+# Install all dependencies (including devDependencies for TypeScript build)
+RUN npm ci
 
-# Stage 2: Build the application
-FROM node:20-alpine AS builder
-WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Set environment variables for build
@@ -21,7 +17,7 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
-# Stage 3: Production runner
+# Stage 2: Production runner
 FROM node:20-alpine AS runner
 WORKDIR /app
 
