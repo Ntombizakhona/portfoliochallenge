@@ -1,0 +1,129 @@
+.section {
+    padding: var(--space-16) 0;
+    position: relative;
+}
+
+.categoriesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-6);
+}
+
+.category {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.categoryTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.skillsList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.skillItem {
+    opacity: 0;
+    animation: skillFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes skillFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.skillHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+}
+
+.skillName {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.skillLevel {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent-secondary);
+}
+
+.progressBar {
+    height: 8px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    position: relative;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--color-accent-gradient);
+    border-radius: var(--radius-full);
+    width: 0;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.progressFill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@media (max-width: 768px) {
+    .categoriesGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .category {
+        padding: var(--space-5);
+    }
+}

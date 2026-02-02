@@ -1,0 +1,211 @@
+.section {
+    padding: var(--space-16) 0;
+    position: relative;
+}
+
+.certificationsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-5);
+    perspective: 1000px;
+}
+
+/* Card Container - handles visibility animation */
+.cardContainer {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.cardContainer.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Card - handles flip */
+.card {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.cardContainer:hover .card {
+    transform: rotateY(180deg);
+}
+
+/* Both sides of card */
+.cardFront,
+.cardBack {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Front of card */
+.cardFront {
+    gap: var(--space-3);
+}
+
+.cardFront::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-accent-gradient);
+}
+
+.iconWrapper {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary) 100%);
+    border-radius: var(--radius-lg);
+    color: white;
+    box-shadow: 0 8px 24px rgba(232, 121, 169, 0.3);
+}
+
+.cardContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.provider {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+}
+
+.certTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: var(--radius-full);
+    color: var(--color-success);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.flipHint {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-top: auto;
+}
+
+/* Back of card */
+.cardBack {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary) 100%);
+    border: none;
+    justify-content: center;
+    gap: var(--space-4);
+}
+
+.backContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.backIcon {
+    color: white;
+    opacity: 0.9;
+}
+
+.backTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.backDescription {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+    max-width: 250px;
+}
+
+.verifyLink {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-full);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-base);
+    margin-top: var(--space-2);
+}
+
+.verifyLink:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .certificationsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        height: 260px;
+    }
+
+    .iconWrapper {
+        width: 56px;
+        height: 56px;
+    }
+
+    .certTitle {
+        font-size: 0.9rem;
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .card {
+        transition: none;
+    }
+
+    .cardContainer:hover .card {
+        transform: none;
+    }
+}

@@ -1,0 +1,196 @@
+.section {
+    padding: var(--space-16) 0;
+    position: relative;
+}
+
+.projectsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-6);
+}
+
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: cardReveal 0.6s ease-out forwards;
+}
+
+@keyframes cardReveal {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
+    border-color: var(--color-accent-primary);
+}
+
+.cardImage {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.imagePlaceholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-bg-tertiary) 0%, var(--color-bg-secondary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.projectIcon {
+    font-size: 4rem;
+    opacity: 0.5;
+}
+
+.cardOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.card:hover .cardOverlay {
+    opacity: 1;
+}
+
+.overlayContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    transform: translateY(20px);
+    transition: transform var(--transition-base);
+}
+
+.card:hover .overlayContent {
+    transform: translateY(0);
+}
+
+.overlayBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.overlayBtn:hover {
+    background: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+    color: white;
+}
+
+.cardContent {
+    padding: var(--space-5);
+}
+
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+}
+
+.cardDescription {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+}
+
+.highlights {
+    margin-bottom: var(--space-4);
+}
+
+.highlight {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+.highlight svg {
+    color: var(--color-accent-primary);
+    flex-shrink: 0;
+}
+
+.techStack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.techBadge {
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-accent-secondary);
+    transition: all var(--transition-fast);
+}
+
+.techBadge:hover {
+    background: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .projectsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .cardImage {
+        height: 160px;
+    }
+
+    .overlayContent {
+        flex-direction: row;
+    }
+
+    .overlayBtn span {
+        display: none;
+    }
+
+    .overlayBtn {
+        padding: var(--space-3);
+        border-radius: var(--radius-full);
+    }
+}
