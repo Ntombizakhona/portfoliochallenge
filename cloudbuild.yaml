@@ -22,7 +22,7 @@ steps:
       - 'managed'
       - '--allow-unauthenticated'
       - '--labels'
-      - 'dev-tutorial=ai-digital-twin-portfolio'
+      - 'dev-tutorial=devnewyear2026'
       - '--set-env-vars'
       - 'GEMINI_API_KEY=${_GEMINI_API_KEY}'
 
