@@ -1,9 +1,9 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import { NextRequest, NextResponse } from 'next/server';
 import { getSystemPrompt } from '@/lib/portfolioData';
 
-// Initialize Gemini client
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+// Initialize the new GenAI client
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 export async function POST(request: NextRequest) {
     try {
@@ -17,20 +17,11 @@ export async function POST(request: NextRequest) {
         }
 
         if (!process.env.GEMINI_API_KEY) {
-            // Fallback response when API key is not configured
             console.log('No GEMINI_API_KEY found in environment');
             return NextResponse.json({
                 response: "I'm currently in demo mode. To enable full AI capabilities, please configure the GEMINI_API_KEY in your environment variables. Feel free to explore the portfolio in the meantime!"
             });
         }
-
-        console.log('API Key found, first 10 chars:', process.env.GEMINI_API_KEY.substring(0, 10) + '...');
-
-        // Get the Gemini model
-        const model = genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash',
-            systemInstruction: getSystemPrompt(),
-        });
 
         // Build conversation history for context
         const chatHistory = history?.map((msg: { role: string; content: string }) => ({
@@ -38,24 +29,25 @@ export async function POST(request: NextRequest) {
             parts: [{ text: msg.content }],
         })) || [];
 
-        // Start chat with history
-        const chat = model.startChat({
+        // Create a chat session with the new SDK
+        const chat = ai.chats.create({
+            model: 'gemini-2.5-flash',
             history: chatHistory,
-            generationConfig: {
+            config: {
+                systemInstruction: getSystemPrompt(),
                 maxOutputTokens: 500,
                 temperature: 0.7,
             },
         });
 
-        // Generate response
-        const result = await chat.sendMessage(message);
-        const response = result.response.text();
+        // Send message and get response
+        const result = await chat.sendMessage({ message });
+        const response = result.text ?? "I'm having trouble connecting. Please try again!";
 
         return NextResponse.json({ response });
     } catch (error) {
         console.error('Chat API Error:', error);
 
-        // Log more details about the error
         if (error instanceof Error) {
             console.error('Error message:', error.message);
             console.error('Error stack:', error.stack);

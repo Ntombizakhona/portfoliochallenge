@@ -144,6 +144,40 @@ export const portfolioData = {
         "Microsoft AI Fundamentals",
     ],
 
+    github: {
+        username: "Ntombizakhona",
+        profileUrl: "https://github.com/Ntombizakhona",
+        company: "Bamboo Charcoal Computing",
+        publicRepos: 23,
+        publicGists: 7,
+        memberSince: "December 2017",
+        repos: [
+            { name: "12WeekAWSWorkshopChallenge", description: "Blog Posts From The 12 Week AWS Workshop Challenge by Paula Wakabi", language: "JavaScript" },
+            { name: "Blog", description: "My Blog Posts", language: null },
+            { name: "BuildingInPublic", description: "Building in Public Repo", language: null },
+            { name: "CloudGlossary", description: "Cloud Glossary Resources", language: "Shell" },
+            { name: "CloudLanguages", description: "Languages of the Cloud", language: null },
+            { name: "Data-Analysis-With-Python", description: "Data Analysis With Python from FreeCodeCamp.org", language: null },
+            { name: "Data-Visualization", description: "Data Visualization from FreeCodeCamp.org", language: "JavaScript" },
+            { name: "eliza-exhumed", description: "A Spooky AI Chatbot - Kiroween Hackathon Submission", language: "TypeScript" },
+            { name: "Events", description: "Cons & Events", language: null },
+            { name: "Exam-Guides", description: "Exam Guides", language: null },
+            { name: "eyereadeverything", description: "Book Reviews", language: null },
+            { name: "eyereadeverythingapp", description: "Blog/Talk to Video platform powered by Amazon Nova, Step Functions, ECS, and Next.js", language: "Python" },
+            { name: "GitpodCodebase", description: "Codebase for Gitpod", language: null },
+            { name: "jog-squad", description: "Fix the Earth. Fix Your Health. Gamified eco-jogging with Gemini AI.", language: "JavaScript" },
+            { name: "languagesportfolio", description: "My Cloud Languages for Beginners Portfolio", language: "Python" },
+            { name: "Learn", description: "Learning Resources", language: null },
+            { name: "Platforms", description: "Platforms", language: null },
+            { name: "portfoliochallenge", description: "Portfolio challenge project", language: "TypeScript" },
+            { name: "Programs", description: "Educational, Business & Career Development Programs", language: null },
+            { name: "protus", description: "Protus project", language: "TypeScript" },
+            { name: "taas", description: "TaaS project", language: "JavaScript" },
+            { name: "TaxiManje", description: "TaxiManje project", language: "TypeScript" },
+            { name: "Versus", description: "Exploring Nuances and Differences for Beginners in the Cloud", language: null },
+        ],
+    },
+
     blogs: [
         {
             id: 1,
@@ -192,7 +226,7 @@ export const portfolioData = {
 
 // System prompt for AI Digital Twin
 export const getSystemPrompt = () => {
-    const { personal, personality, skills, projects, experience } = portfolioData;
+    const { personal, personality, skills, projects, experience, certifications, blogs, github } = portfolioData;
 
     return `You are the AI Digital Twin of ${personal.name}, a ${personal.title}. You represent them in conversations with portfolio visitors.
 
@@ -220,6 +254,20 @@ EXPERIENCE:
 ${experience.map(e => `
 - ${e.title} at ${e.company} (${e.period}): ${e.description}
 `).join('')}
+
+CERTIFICATIONS:
+${certifications.join(', ')}
+
+BLOGS & CONTENT:
+${blogs.map(b => `- ${b.title} (${b.platform}): ${b.description}`).join('\n')}
+
+GITHUB PROFILE (${github.profileUrl}):
+Username: ${github.username}
+Company: ${github.company}
+Member since: ${github.memberSince}
+Public repos: ${github.publicRepos} | Public gists: ${github.publicGists}
+Notable repositories:
+${github.repos.map(r => `- ${r.name}: ${r.description}${r.language ? ` [${r.language}]` : ''}`).join('\n')}
 
 GUIDELINES:
 1. Respond as if you ARE ${personal.name}, using first person ("I", "my", "me")
