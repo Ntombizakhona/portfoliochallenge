@@ -1,6 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import { NextRequest, NextResponse } from 'next/server';
 import { getSystemPrompt } from '@/lib/portfolioData';
+import { getFallbackResponse } from '@/lib/fallbackChat';
 
 // Initialize the new GenAI client
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
@@ -16,11 +17,11 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // If no API key, use the fallback chatbot
         if (!process.env.GEMINI_API_KEY) {
-            console.log('No GEMINI_API_KEY found in environment');
-            return NextResponse.json({
-                response: "I'm currently in demo mode. To enable full AI capabilities, please configure the GEMINI_API_KEY in your environment variables. Feel free to explore the portfolio in the meantime!"
-            });
+            console.log('No GEMINI_API_KEY — using fallback chatbot');
+            const fallback = getFallbackResponse(message);
+            return NextResponse.json({ response: fallback.response });
         }
 
         // Build conversation history for context
@@ -50,11 +51,11 @@ export async function POST(request: NextRequest) {
 
         if (error instanceof Error) {
             console.error('Error message:', error.message);
-            console.error('Error stack:', error.stack);
         }
 
-        return NextResponse.json({
-            response: "I'm having a moment! Please try again or reach out directly via the contact section."
-        });
+        // Fall back to keyword matching when Gemini fails
+        const { message } = await request.clone().json().catch(() => ({ message: '' }));
+        const fallback = getFallbackResponse(message || '');
+        return NextResponse.json({ response: fallback.response });
     }
 }
